@@ -27,25 +27,28 @@ class FindRecords extends Component {
     }
 
 
-    renderRecords = records => (
-        <div className="row">
-            {records.map((record, i) => (
-                <div className="card col-md-4" key={i}>
-                    <div className="card-body">
-                        <h5 className="card-title">{record.title}</h5>
-                        <p className="card-text">{record.body}</p>
-                        <Link
-                            to={`/record/${record._id}`}
-                            className="btn btn-raised btn-primary btn-sm"
-                        >
-                            View Record
+    renderRecords = records => {
+
+        return (
+            <div className="row">
+                {records.map((record, i) => (
+                    <div className="card col-md-4" key={i}>
+                        <div className="card-body">
+                            <h5 className="card-title">{record.title}</h5>
+                            <p className="card-text">{record.body}</p>
+                            <Link
+                                to={`/record/${record._id}`}
+                                className="btn btn-raised btn-primary btn-sm"
+                            >
+                                View Record
                         </Link>
 
+                        </div>
                     </div>
-                </div>
-            ))}
-        </div>
-    );
+                ))}
+            </div>
+        );
+    }
 
     render() {
         const { records } = this.state;

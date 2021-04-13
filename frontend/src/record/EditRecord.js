@@ -25,7 +25,7 @@ class EditRecord extends Component {
                 this.setState({ redirectToRecords: true });
             } else {
                 this.setState({
-                    id: data.postedBy._id,
+                    id: data.postedBy,
                     title: data.title,
                     body: data.body,
                     recordId: recordId,
@@ -75,6 +75,7 @@ class EditRecord extends Component {
             const recordId = this.props.match.params.recordId;
             const token = isAuthenticated().token;
 
+            console.log(recordId, token);
             update(recordId, token, this.recordData).then(data => {
                 if (data.error) this.setState({ error: data.error });
                 else {
@@ -163,24 +164,31 @@ class EditRecord extends Component {
                     ""
                 )}
 
-                <img
+                 <img
                     style={{ height: "200px", width: "auto" }}
                     className="img-thumbnail"
-                    src={`${
-                        process.env.REACT_APP_API_URL
-                    }/record/photo/${recordId}`}
-                    onError={i => (i.target.src = `${DefaultRecords}`)}
-                    alt={title}
-                />
+                    // src={`${DefaultRecords}`}
+                     src={`${DefaultRecords}`}    
+                    // src={`${
+                    //     process.env.REACT_APP_API_URL
+                    // }/record/photo/${recordId}`}
+                    // onError={i => (i.target.src = `${DefaultRecords}`)}
+                    alt = { title }
+                    />
+ 
+                    {
+                        isAuthenticated().user.role === "admin" &&
+                            this.editRecordForm(title, body, recordId)
+                    }
 
-                {isAuthenticated().user.role === "admin" &&
-                    this.editRecordForm(title, body, recordId)}
-
-                {isAuthenticated().user._id === id &&
+                {isAuthenticated().user._id == id &&
                     this.editRecordForm(title, body, recordId)}
             </div>
         );
+    
     }
 }
+    
+
 
 export default EditRecord;

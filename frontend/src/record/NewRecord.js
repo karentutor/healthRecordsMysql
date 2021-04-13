@@ -57,6 +57,8 @@ class NewRecord extends Component {
             const userId = isAuthenticated().user._id;
             const token = isAuthenticated().token;
 
+            console.log('here', userId, token)
+
             create(userId, token, this.formData).then(data => {
                 if (data.error) this.setState({ error: data.error });
                 else {

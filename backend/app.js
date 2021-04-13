@@ -28,7 +28,7 @@ global.db = db;
 // bring in routes
 const recordRoutes = require('./routes/record');
 const authRoutes = require('./routes/auth');
-//const userRoutes = require('./routes/user');
+const userRoutes = require('./routes/user');
 // apiDocs
 /*
 app.get('/api', (req, res) => {
@@ -49,10 +49,10 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(expressValidator());
 app.use(cors());
-//app.use('/api', recordRoutes);
+
 app.use('/api', authRoutes);
 app.use('/api', recordRoutes);
-//app.use('/api', userRoutes);
+app.use('/api', userRoutes);
 app.use(function(err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
         res.status(401).json({ error: 'Unauthorized!' });

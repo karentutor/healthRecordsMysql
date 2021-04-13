@@ -119,16 +119,15 @@ exports.updateUser = (req, res, next) => {
 exports.userById = (req, res, next, id) => {
 
     let query = "SELECT * FROM `users` WHERE `_id` = '" + id + "' ";
-    console.log('q', query);
-        db.query(query, (err, result) => {
+        db.query(query, (err, data) => {
             if (err) {
                 return res.status(500).send(err);
             }
-            console.log('i');
-           console.log(result[0]);
-  //      req.profile = result[0]; // adds profile object in req with user info
-   //        next();
+            let user = JSON.parse(JSON.stringify(data[0]));
+            req.profile = user; // adds profile object in req with user info
+            next();
         });
+    
     // User.findById(id)
     //     // populate followers and following users array
     //     .populate('following', '_id name')
