@@ -31,9 +31,7 @@ exports.createRecord = (req, res, next) => {
 		}
 
 		let query =
-			"INSERT INTO `records` (_id, title, body, postedBy, role) VALUES ('" +
-			_id +
-			"', '" +
+			"INSERT INTO `records` (title, body, postedBy, role) VALUES ('" +
 			title +
 			"', '" +
 			body +
@@ -53,15 +51,14 @@ exports.createRecord = (req, res, next) => {
 
 
 exports.deleteRecord = (req, res) => {
-	let record = req.record;
-	record.remove((err, record) => {
+	let _id = req.record._id;
+	let query = `DELETE FROM records WHERE _id=${_id}`;
+	db.query(query, (err, data) => {
 		if (err) {
-			return res.status(400).json({
-				error: err,
-			});
+			return res.status(500).send(err);
 		}
-		res.json({
-			message: "Record deleted successfully",
+		return res.status(200).json({
+		message: "suuccess",
 		});
 	});
 };
@@ -159,17 +156,15 @@ exports.updateRecord = (req, res, next) => {
 		//	record.photo.contentType = files.photo.type;
 		}
 
-		let query = `UPDATE records SET title='${title}', body='${body}', postedBy=${postedBy}, role='${role}'`;
+		let query = `UPDATE records SET title='${title}', body='${body}', postedBy=${postedBy}, role='${role}' WHERE _id=${_id}`;
 
-		console.log(query);
-/*
+
 		db.query(query, (err, data) => {
 			if (err) {
 				return res.status(500).send(err);
 			}
 			res.status(200).send(data);
 		});
-	*/next();
 	});
 };
 

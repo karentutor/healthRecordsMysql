@@ -2,6 +2,7 @@ const express = require('express');
 
 const {
     createRecord,
+    deleteRecord,
     getRecords,
     isPoster,
     photo,
@@ -26,7 +27,7 @@ router.post('/record/new/:userId', requireSignin, createRecord, createRecordVali
 //router.get('/records/by/:userId', requireSignin, recordsyUser);
 router.get('/record/:recordId', singleRecord);
 router.put('/record/:recordId', requireSignin, isPoster, updateRecord);
-//router.delete('/record/:recordId', requireSignin, isPoster, deleteRecord);
+router.delete('/record/:recordId', requireSignin, isPoster, deleteRecord);
 // photo
 router.get('/record/photo/:recordId', photo);
 
