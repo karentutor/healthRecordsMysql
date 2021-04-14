@@ -1,3 +1,21 @@
+
+export const comment = (userId, token, recordId, body, postedBy, role, title) => {
+    console.log('here');
+    return fetch(`${process.env.REACT_APP_API_URL}/record/comment`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ userId, token, recordId, body, postedBy, role, title })
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
 export const create = (userId, token, record) => {
     return fetch(`${process.env.REACT_APP_API_URL}/record/new/${userId}`, {
         method: "POST",
@@ -39,17 +57,6 @@ export const listByUser = (userId, token) => {
 };
 
 
-export const singleRecord = recordId => {
-
-    return fetch(`${process.env.REACT_APP_API_URL}/record/${recordId}`, {
-        method: "GET"
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
-};
-
 export const remove = (recordId, token) => {
     return fetch(`${process.env.REACT_APP_API_URL}/record/${recordId}`, {
         method: "DELETE",
@@ -64,6 +71,19 @@ export const remove = (recordId, token) => {
         })
         .catch(err => console.log(err));
 };
+
+
+export const singleRecord = recordId => {
+
+    return fetch(`${process.env.REACT_APP_API_URL}/record/${recordId}`, {
+        method: "GET"
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
 
 export const update = (recordId, token, record) => {
     
@@ -82,3 +102,18 @@ export const update = (recordId, token, record) => {
 };
 
 
+export const uncomment = (userId, token, recordId, comment) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/record/uncomment`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ userId, recordId, comment })
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};

@@ -1,6 +1,7 @@
 const express = require('express');
 
 const {
+    comment,
     createRecord,
     deleteRecord,
     getRecords,
@@ -9,6 +10,8 @@ const {
     recordById,
     recordsByUser,
     singleRecord,
+    uncomment,
+    updateComment,
     updateRecord
 } = require('../controllers/record');
 
@@ -21,6 +24,11 @@ const router = express.Router();
 
 router.get('/records', getRecords);
 
+
+// comments
+router.put('/record/comment', requireSignin, comment);
+router.put('/record/uncomment', requireSignin, uncomment);
+router.put('/record/updatecomment', requireSignin, updateComment);
 
 
 // record routes

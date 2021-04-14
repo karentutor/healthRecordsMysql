@@ -8,6 +8,7 @@ import Comment from "./Comment";
 class SingleRecord extends Component {
 	state = {
 		record: "",
+		commentId: '',
 		redirectToHome: false,
 		redirectToSignin: false,
 	};
@@ -19,9 +20,11 @@ class SingleRecord extends Component {
 			if (data.error) {
 				console.log(data.error);
 			} else {
-				this.setState({
-					record: data,
-				});
+				console.log(data)
+				// this.setState({
+				// 	comments: dataComments,
+				// 	record: data
+//				});
 			}
 		});
 	};
@@ -46,6 +49,10 @@ class SingleRecord extends Component {
 			this.deleteRecord();
 		}
 	};
+
+	  updateComments = comments => {
+        this.setState({ comments });
+    };
 
 	renderRecord = (record) => {
 		const posterId = record.postedBy ? `/user/${record.postedBy}` : "";
@@ -126,7 +133,7 @@ class SingleRecord extends Component {
 	};
 
 	render() {
-		const { record, redirectToHome, redirectToSignin } = this.state;
+		const { commentId, record, redirectToHome, redirectToSignin } = this.state;
 
 		if (redirectToHome) {
 			return <Redirect to={`/`} />;
@@ -145,6 +152,9 @@ class SingleRecord extends Component {
 				) : (
 					this.renderRecord(record)
 				)}
+
+
+                <Comment recordId={record._id}  />
 			</div>
 		);
 	}

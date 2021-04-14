@@ -12,7 +12,7 @@ exports.signup = async (req, res) => {
     //const user = await new User(req.body);
     //await user.save();
     //res.status(200).json({ message: 'Signup success! Please login.' });
-    let _id = "1234567";
+   
     let name = req.body.name;
     let email = req.body.email;
     let password = req.body.password;
@@ -21,9 +21,7 @@ exports.signup = async (req, res) => {
     // send the player's details to the database
 
     let query =
-        "INSERT INTO `users` (_id, name, email, password, role) VALUES ('" +
-        _id +
-        "', '" +
+        "INSERT INTO `users` (name, email, password, role) VALUES ('" +
         name +
         "', '" +
         email +
