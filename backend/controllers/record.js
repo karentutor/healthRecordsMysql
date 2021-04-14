@@ -58,7 +58,7 @@ exports.deleteRecord = (req, res) => {
 			return res.status(500).send(err);
 		}
 		return res.status(200).json({
-		message: "suuccess",
+		message: "success",
 		});
 	});
 };
@@ -99,6 +99,24 @@ exports.photo = (req, res, next) => {
 
 
 exports.recordsByUser = (req, res) => {
+
+
+	// get record
+	let postedBy = req.record.postedBy;
+
+	let query = "SELECT r._id, r.title, r.body, r.postedBy, r.created, r.updated, r.role, u.name FROM `records` as `r` INNER JOIN `users` as `u` on r.postedBy = u._id WHERE r._postedBy = '" + postedBy + "'";
+	
+//	console.log(query);
+
+	db.query(query, (err, record) => {
+            if (err) {
+                return res.status(500).send(err);
+			}
+			let data = JSON.parse(JSON.stringify(record[0]));
+            req.record = data; // adds profile object in req with user info
+            next();
+        });
+
 	Record.find({ postedBy: req.profile._id })
 		.populate("postedBy", "_id name")
 		.select("_id title body created likes")

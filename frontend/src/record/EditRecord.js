@@ -75,7 +75,6 @@ class EditRecord extends Component {
             const recordId = this.props.match.params.recordId;
             const token = isAuthenticated().token;
 
-            console.log(recordId, token);
             update(recordId, token, this.recordData).then(data => {
                 if (data.error) this.setState({ error: data.error });
                 else {

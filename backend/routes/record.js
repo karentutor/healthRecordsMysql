@@ -7,6 +7,7 @@ const {
     isPoster,
     photo,
     recordById,
+    recordsByUser,
     singleRecord,
     updateRecord
 } = require('../controllers/record');
@@ -24,7 +25,7 @@ router.get('/records', getRecords);
 
 // record routes
 router.post('/record/new/:userId', requireSignin, createRecord, createRecordValidator);
-//router.get('/records/by/:userId', requireSignin, recordsyUser);
+router.get('/records/by/:userId', requireSignin, recordsByUser);
 router.get('/record/:recordId', singleRecord);
 router.put('/record/:recordId', requireSignin, isPoster, updateRecord);
 router.delete('/record/:recordId', requireSignin, isPoster, deleteRecord);

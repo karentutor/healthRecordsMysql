@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { findPeople, follow } from "./apiUser";
+import { findPeople } from "./apiUser";
 import DefaultProfile from "../images/avatar.jpg";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
@@ -14,6 +14,10 @@ class FindPeople extends Component {
         };
     }
 
+    render() {
+        return (<p>hi</p>);
+    }
+/*
     componentDidMount() {
         const userId = isAuthenticated().user._id;
         const token = isAuthenticated().token;
@@ -94,7 +98,7 @@ class FindPeople extends Component {
                 {this.renderUsers(users)}
             </div>
         );
-    }
+    }*/
 }
 
 export default FindPeople;
