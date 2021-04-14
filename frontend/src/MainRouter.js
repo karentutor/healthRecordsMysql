@@ -8,10 +8,10 @@ import Profile from "./user/Profile";
 import Users from "./user/Users";
 import EditProfile from "./user/EditProfile";
 import FindPeople from "./user/FindPeople";
-import FindRecords from "./record/FindRecords";
-import NewRecord from "./record/NewRecord";
-import EditRecord from "./record/EditRecord";
-import SingleRecord from "./record/SingleRecord";
+import FindPatients from "./patient/FindPatients";
+import NewPatient from "./patient/NewPatient";
+import EditPatient from "./patient/EditPatient";
+import SinglePatient from "./patient/SinglePatient";
 import PrivateRoute from "./auth/PrivateRoute";
 import ResetPassword from "./user/ResetPassword";
 import Admin from "./admin/Admin";
@@ -27,12 +27,12 @@ const MainRouter = () => (
                 path="/reset-password/:resetPasswordToken"
                 component={ResetPassword}
             />
-            <PrivateRoute exact path="/record/create" component={NewRecord} />
-            <Route exact path="/record/:recordId" component={SingleRecord} />
+            <PrivateRoute exact path="/patient/create" component={NewPatient} />
+            <Route exact path="/patient/:patientId" component={SinglePatient} />
             <PrivateRoute
                 exact
-                path="/record/edit/:recordId"
-                component={EditRecord}
+                path="/patient/edit/:patientId"
+                component={EditPatient}
             />
             <Route exact path="/users" component={Users} />
             <Route exact path="/signup" component={Signup} />
@@ -43,7 +43,7 @@ const MainRouter = () => (
                 component={EditProfile}
             />
             <PrivateRoute exact path="/findpeople" component={FindPeople} />
-            <PrivateRoute exact path="/findrecords" component={FindRecords} />
+            <PrivateRoute exact path="/findpatients" component={FindPatients} />
 
             <PrivateRoute exact path="/user/:userId" component={Profile} />
         </Switch>

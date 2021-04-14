@@ -5,7 +5,7 @@ import { read } from "./apiUser";
 import DefaultProfile from "../images/avatar.jpg";
 import DeleteUser from "./DeleteUser";
 //import ProfileTabs from "./ProfileTabs";
-import { listByUser } from "../record/apiRecord";
+import { listByUser } from "../patient/apiPatient";
 
 class Profile extends Component {
   constructor() {

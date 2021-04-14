@@ -1,49 +1,31 @@
 import React, { Component } from "react";
-import { singleRecord, update } from "./apiRecord";
 import { isAuthenticated } from "../auth";
-import { Redirect } from "react-router-dom";
-import DefaultRecords from "../images/mountains.jpg";
+import { create } from "./apiPatient";
+    import { Redirect } from "react-router-dom";
 
-class EditRecord extends Component {
+class NewRecord extends Component {
     constructor() {
         super();
         this.state = {
-            id: "",
-            recordId: '',
             title: "",
             body: "",
-            redirectToRecords: false,
+            photo: "",
             error: "",
+            user: {},
             fileSize: 0,
-            loading: false
+            loading: false,
+            redirectToRecord: false
         };
     }
 
-    init = recordId => {
-        singleRecord(recordId).then(data => {
-            if (data.error) {
-                this.setState({ redirectToRecords: true });
-            } else {
-                this.setState({
-                    id: data.postedBy,
-                    title: data.title,
-                    body: data.body,
-                    recordId: recordId,
-                    error: ""
-                });
-            }
-        });
-    };
-
     componentDidMount() {
-        this.recordData = new FormData();
-        const recordId = this.props.match.params.recordId;
-        this.init(recordId);
+        this.formData = new FormData();
+        this.setState({ user: isAuthenticated().user });
     }
 
     isValid = () => {
         const { title, body, fileSize } = this.state;
-        if (fileSize > 1000000) {
+        if (fileSize > 100000) {
             this.setState({
                 error: "File size should be less than 100kb",
                 loading: false
@@ -63,7 +45,7 @@ class EditRecord extends Component {
             name === "photo" ? event.target.files[0] : event.target.value;
 
         const fileSize = name === "photo" ? event.target.files[0].size : 0;
-        this.recordData.set(name, value);
+        this.formData.set(name, value);
         this.setState({ [name]: value, fileSize });
     };
 
@@ -72,27 +54,29 @@ class EditRecord extends Component {
         this.setState({ loading: true });
 
         if (this.isValid()) {
-            const recordId = this.props.match.params.recordId;
+            const userId = isAuthenticated().user._id;
             const token = isAuthenticated().token;
 
-            update(recordId, token, this.recordData).then(data => {
+            console.log('here', userId, token)
+
+            create(userId, token, this.formData).then(data => {
                 if (data.error) this.setState({ error: data.error });
                 else {
                     this.setState({
                         loading: false,
                         title: "",
                         body: "",
-                        redirectToRecords: true
+                        redirectToRecord: true
                     });
                 }
             });
         }
     };
 
-    editRecordForm = (title, body, recordId) => (
+    newRecordForm = (title, body) => (
         <form>
             <div className="form-group">
-                <label className="text-muted">Post Photo</label>
+                <label className="text-muted">Post Patient Photo</label>
                 <input
                     onChange={this.handleChange("photo")}
                     type="file"
@@ -124,30 +108,29 @@ class EditRecord extends Component {
                 onClick={this.clickSubmit}
                 className="btn btn-raised btn-primary"
             >
-                Update Record
+                Create Record
             </button>
         </form>
     );
 
     render() {
         const {
-            id,
             title,
             body,
-            recordId,
-            redirectToRecords,
+            photo,
+            user,
             error,
-            loading
+            loading,
+            redirectToRecord
         } = this.state;
 
-        if (redirectToRecords) {
+        if (redirectToRecord) {
             return <Redirect to={`/findrecords`} />;
         }
 
         return (
             <div className="container">
-                <h2 className="mt-5 mb-5">{title}</h2>
-
+                <h2 className="mt-5 mb-5">Create a new patient record</h2>
                 <div
                     className="alert alert-danger"
                     style={{ display: error ? "" : "none" }}
@@ -163,31 +146,10 @@ class EditRecord extends Component {
                     ""
                 )}
 
-                 <img
-                    style={{ height: "200px", width: "auto" }}
-                    className="img-thumbnail"
-                    // src={`${DefaultRecords}`}
-                     src={`${DefaultRecords}`}    
-                    // src={`${
-                    //     process.env.REACT_APP_API_URL
-                    // }/record/photo/${recordId}`}
-                    // onError={i => (i.target.src = `${DefaultRecords}`)}
-                    alt = { title }
-                    />
- 
-                    {
-                        isAuthenticated().user.role === "admin" &&
-                            this.editRecordForm(title, body, recordId)
-                    }
-
-                {isAuthenticated().user._id == id &&
-                    this.editRecordForm(title, body, recordId)}
+                {this.newRecordForm(title, body)}
             </div>
         );
-    
     }
 }
-    
 
-
-export default EditRecord;
+export default NewRecord;

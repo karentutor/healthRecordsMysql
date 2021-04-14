@@ -1,26 +1,23 @@
 import React, { Component } from "react";
-import { comment, uncomment } from "./apiRecord";
+import { comment, uncomment } from "./apiPatient";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import DefaultProfile from "../images/avatar.jpg";
 
 class Comment extends Component {
-    state = {
-        comments: '',
-        body: '',
-        role: '',
-        title: '',
-		error: ""
+	state = {
+		comments: "",
+		body: "",
+		role: "",
+		title: "",
+		error: "",
 	};
 
-    
-        handleChange = name => event => {
-        this.setState({ error: "" });
-        const value = event.target.value;
-        this.setState({ [name]: value });
-    };
-
-    
+	handleChange = (name) => (event) => {
+		this.setState({ error: "" });
+		const value = event.target.value;
+		this.setState({ [name]: value });
+	};
 
 	addComment = (e) => {
 		e.preventDefault();
@@ -30,22 +27,20 @@ class Comment extends Component {
 			return false;
 		}
 
-
 		const userId = isAuthenticated().user._id;
 		const role = isAuthenticated().user.role;
 		const token = isAuthenticated().token;
-        const recordId = this.props.recordId;
-        const { body, title } = this.state;
+		const recordId = this.props.recordId;
+		const { body, title } = this.state;
 
-        comment(userId, token, recordId, body, userId, role, title).then((data) => {
-
-		    if (data.error) {
-		 		console.log(data.error);
-            }
-             this.setState({ body: '', title: ''  });
-                        // dispatch fresh list of coments to parent (SinglePost)
-            //this.props.updateComments(data);
-		 });
+		comment(userId, token, recordId, body, userId, role, title).then((data) => {
+			if (data.error) {
+				console.log(data.error);
+			}
+			this.setState({ body: "", title: "" });
+			// dispatch fresh list of coments to parent (SinglePost)
+			//this.props.updateComments(data);
+		});
 	};
 	render() {
 		const { error } = this.state;
@@ -62,7 +57,8 @@ class Comment extends Component {
 							value={this.state.title}
 							className="form-control"
 							placeholder="Leave record title..."
-						/><br />
+						/>
+						<br />
 						<input
 							type="text"
 							onChange={this.handleChange("body")}
@@ -81,8 +77,7 @@ class Comment extends Component {
 				>
 					{error}
 				</div>
-                              </div>
-				
+			</div>
 		);
 	}
 }

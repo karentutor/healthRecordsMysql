@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { list } from "./apiRecord";
-import DefaultRecord from "../images/mountains.jpg";
+import { list } from "./apiPatient";
+import DefaultPatient from "../images/mountains.jpg";
 import { Link } from "react-router-dom";
 
-class Records extends Component {
+class Patients extends Component {
 	constructor() {
 		super();
 		this.state = {
@@ -53,7 +53,7 @@ class Records extends Component {
 								<img
 									src={`${process.env.REACT_APP_API_URL}/record/photo/${record._id}`}
 									alt={record.title}
-									onError={(i) => (i.target.src = `${DefaultRecord}`)}
+									onError={(i) => (i.target.src = `${DefaultPatient}`)}
 									className="img-thunbnail mb-3"
 									style={{ height: "200px", width: "100%" }}
 								/>
@@ -114,4 +114,4 @@ class Records extends Component {
 	}
 }
 
-export default Records;
+export default Patients;

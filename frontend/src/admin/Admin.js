@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Records from "../record/Records";
+import Records from "../patient/Patients";
 import Users from "../user/Users";
 import { isAuthenticated } from "../auth";
 import { Redirect } from "react-router-dom";

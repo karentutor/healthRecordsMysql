@@ -1,31 +1,49 @@
 import React, { Component } from "react";
+import { singlePatient, update } from "./apiPatient";
 import { isAuthenticated } from "../auth";
-import { create } from "./apiRecord";
-    import { Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import DefaultPatients from "../images/mountains.jpg";
 
-class NewRecord extends Component {
+class EditPatient extends Component {
     constructor() {
         super();
         this.state = {
+            id: "",
+            patientId: '',
             title: "",
             body: "",
-            photo: "",
+            redirectToPatients: false,
             error: "",
-            user: {},
             fileSize: 0,
-            loading: false,
-            redirectToRecord: false
+            loading: false
         };
     }
 
+    init = patientId => {
+        singlePatient(patientId).then(data => {
+            if (data.error) {
+                this.setState({ redirectToPatients: true });
+            } else {
+                this.setState({
+                    id: data.postedBy,
+                    title: data.title,
+                    body: data.body,
+                    patientId: patientId,
+                    error: ""
+                });
+            }
+        });
+    };
+
     componentDidMount() {
-        this.formData = new FormData();
-        this.setState({ user: isAuthenticated().user });
+        this.patientData = new FormData();
+        const patientId = this.props.match.params.patientId;
+        this.init(patientId);
     }
 
     isValid = () => {
         const { title, body, fileSize } = this.state;
-        if (fileSize > 100000) {
+        if (fileSize > 1000000) {
             this.setState({
                 error: "File size should be less than 100kb",
                 loading: false
@@ -45,7 +63,7 @@ class NewRecord extends Component {
             name === "photo" ? event.target.files[0] : event.target.value;
 
         const fileSize = name === "photo" ? event.target.files[0].size : 0;
-        this.formData.set(name, value);
+        this.patientData.set(name, value);
         this.setState({ [name]: value, fileSize });
     };
 
@@ -54,29 +72,27 @@ class NewRecord extends Component {
         this.setState({ loading: true });
 
         if (this.isValid()) {
-            const userId = isAuthenticated().user._id;
+            const patientId = this.props.match.params.patientId;
             const token = isAuthenticated().token;
 
-            console.log('here', userId, token)
-
-            create(userId, token, this.formData).then(data => {
+            update(patientId, token, this.patientData).then(data => {
                 if (data.error) this.setState({ error: data.error });
                 else {
                     this.setState({
                         loading: false,
                         title: "",
                         body: "",
-                        redirectToRecord: true
+                        redirectTopatients: true
                     });
                 }
             });
         }
     };
 
-    newRecordForm = (title, body) => (
+    editPatientForm = (title, body, patientId) => (
         <form>
             <div className="form-group">
-                <label className="text-muted">Post Patient Photo</label>
+                <label className="text-muted">Post Photo</label>
                 <input
                     onChange={this.handleChange("photo")}
                     type="file"
@@ -108,29 +124,30 @@ class NewRecord extends Component {
                 onClick={this.clickSubmit}
                 className="btn btn-raised btn-primary"
             >
-                Create Record
+                Update patient
             </button>
         </form>
     );
 
     render() {
         const {
+            id,
             title,
             body,
-            photo,
-            user,
+            patientId,
+            redirectToPatients,
             error,
-            loading,
-            redirectToRecord
+            loading
         } = this.state;
 
-        if (redirectToRecord) {
-            return <Redirect to={`/findrecords`} />;
+        if (redirectToPatients) {
+            return <Redirect to={`/findpatients`} />;
         }
 
         return (
             <div className="container">
-                <h2 className="mt-5 mb-5">Create a new patient record</h2>
+                <h2 className="mt-5 mb-5">{title}</h2>
+
                 <div
                     className="alert alert-danger"
                     style={{ display: error ? "" : "none" }}
@@ -146,10 +163,31 @@ class NewRecord extends Component {
                     ""
                 )}
 
-                {this.newRecordForm(title, body)}
+                 <img
+                    style={{ height: "200px", width: "auto" }}
+                    className="img-thumbnail"
+                    // src={`${DefaultPatients}`}
+                     src={`${DefaultPatients}`}    
+                    // src={`${
+                    //     process.env.REACT_APP_API_URL
+                    // }/patient/photo/${patientId}`}
+                    // onError={i => (i.target.src = `${DefaultPatients}`)}
+                    alt = { title }
+                    />
+ 
+                    {
+                        isAuthenticated().user.role === "admin" &&
+                            this.editPatientForm(title, body, patientId)
+                    }
+
+                {isAuthenticated().user._id == id &&
+                    this.editPatientForm(title, body, patientId)}
             </div>
         );
+    
     }
 }
+    
 
-export default NewRecord;
+
+export default EditPatient;

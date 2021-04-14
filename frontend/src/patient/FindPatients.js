@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { list } from "./apiRecord";
+import { list } from "./apiPatient";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
 

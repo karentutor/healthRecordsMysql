@@ -1,14 +1,14 @@
 
-export const comment = (userId, token, recordId, body, postedBy, role, title) => {
+export const comment = (userId, token, patientId, body, postedBy, role, title) => {
     console.log('here');
-    return fetch(`${process.env.REACT_APP_API_URL}/record/comment`, {
+    return fetch(`${process.env.REACT_APP_API_URL}/patient/comment`, {
         method: "PUT",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ userId, token, recordId, body, postedBy, role, title })
+        body: JSON.stringify({ userId, token, patientId, body, postedBy, role, title })
     })
         .then(response => {
             return response.json();
@@ -16,14 +16,14 @@ export const comment = (userId, token, recordId, body, postedBy, role, title) =>
         .catch(err => console.log(err));
 };
 
-export const create = (userId, token, record) => {
-    return fetch(`${process.env.REACT_APP_API_URL}/record/new/${userId}`, {
+export const create = (userId, token, patient) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/patient/new/${userId}`, {
         method: "POST",
         headers: {
             Accept: "application/json",
             Authorization: `Bearer ${token}`
         },
-        body: record
+        body: patient
     })
         .then(response => {
             return response.json();
@@ -32,7 +32,7 @@ export const create = (userId, token, record) => {
 };
 
 export const list = () => {
-    return fetch(`${process.env.REACT_APP_API_URL}/records`, {
+    return fetch(`${process.env.REACT_APP_API_URL}/patients`, {
         method: "GET"
     })
         .then(response => {
@@ -42,7 +42,7 @@ export const list = () => {
 };
 
 export const listByUser = (userId, token) => {
-    return fetch(`${process.env.REACT_APP_API_URL}/records/by/${userId}`, {
+    return fetch(`${process.env.REACT_APP_API_URL}/patients/by/${userId}`, {
         method: "GET",
         headers: {
             Accept: "application/json",
@@ -57,8 +57,8 @@ export const listByUser = (userId, token) => {
 };
 
 
-export const remove = (recordId, token) => {
-    return fetch(`${process.env.REACT_APP_API_URL}/record/${recordId}`, {
+export const remove = (patientId, token) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/patient/${patientId}`, {
         method: "DELETE",
         headers: {
             Accept: "application/json",
@@ -73,9 +73,9 @@ export const remove = (recordId, token) => {
 };
 
 
-export const singleRecord = recordId => {
+export const singlePatient = patientId => {
 
-    return fetch(`${process.env.REACT_APP_API_URL}/record/${recordId}`, {
+    return fetch(`${process.env.REACT_APP_API_URL}/patient/${patientId}`, {
         method: "GET"
     })
         .then(response => {
@@ -85,15 +85,15 @@ export const singleRecord = recordId => {
 };
 
 
-export const update = (recordId, token, record) => {
+export const update = (patientId, token, patient) => {
     
-    return fetch(`${process.env.REACT_APP_API_URL}/record/${recordId}`, {
+    return fetch(`${process.env.REACT_APP_API_URL}/patient/${patientId}`, {
         method: "PUT",
         headers: {
             Accept: "application/json",
             Authorization: `Bearer ${token}`
         },
-        body: record
+        body: patient
     })
         .then(response => {
             return response.json();
@@ -102,15 +102,15 @@ export const update = (recordId, token, record) => {
 };
 
 
-export const uncomment = (userId, token, recordId, comment) => {
-    return fetch(`${process.env.REACT_APP_API_URL}/record/uncomment`, {
+export const uncomment = (userId, token, patientId, comment) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/patient/uncomment`, {
         method: "PUT",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ userId, recordId, comment })
+        body: JSON.stringify({ userId, patientId, comment })
     })
         .then(response => {
             return response.json();

@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { singleRecord, remove } from "./apiRecord";
-import DefaultRecord from "../images/mountains.jpg";
+import { singlePatient, remove } from "./apiPatient";
+import DefaultPatient from "../images/mountains.jpg";
 import { Link, Redirect } from "react-router-dom";
 import { isAuthenticated } from "../auth";
 import Comment from "./Comment";
 
-class SingleRecord extends Component {
+class SinglePatient extends Component {
 	state = {
 		record: "",
 		commentId: '',
@@ -14,16 +14,16 @@ class SingleRecord extends Component {
 	};
 
 	componentDidMount = () => {
-        const recordId = this.props.match.params.recordId;
+        const patientId = this.props.match.params.patientId;
 
-		singleRecord(recordId).then((data) => {
+		singlePatient(patientId).then((data) => {
 			if (data.error) {
 				console.log(data.error);
 			} else {
 				console.log(data)
 				// this.setState({
 				// 	comments: dataComments,
-				// 	record: data
+				// 	patient: data
 //				});
 			}
 		});
@@ -31,10 +31,10 @@ class SingleRecord extends Component {
 
 
 
-	deleteRecord = () => {
-		const recordId = this.props.match.params.recordId;
+	deletePatient = () => {
+		const patientId = this.props.match.params.patientId;
 		const token = isAuthenticated().token;
-		remove(recordId, token).then((data) => {
+		remove(patientId, token).then((data) => {
 			if (data.error) {
 				console.log(data.error);
 			} else {
@@ -44,9 +44,9 @@ class SingleRecord extends Component {
 	};
 
 	deleteConfirmed = () => {
-		let answer = window.confirm("Are you sure you want to delete your record?");
+		let answer = window.confirm("Are you sure you want to delete your patient?");
 		if (answer) {
-			this.deleteRecord();
+			this.deletePatient();
 		}
 	};
 
@@ -54,17 +54,17 @@ class SingleRecord extends Component {
         this.setState({ comments });
     };
 
-	renderRecord = (record) => {
-		const posterId = record.postedBy ? `/user/${record.postedBy}` : "";
+	renderPatient = (patient) => {
+		const posterId = patient.postedBy ? `/user/${patient.postedBy}` : "";
 
-		const posterName = record.postedBy ? record.name : " Unknown";
+		const posterName = patient.postedBy ? patient.name : " Unknown";
 		return (
 			<div className="card-body">
 				<img
 					// src={`${process.env.REACT_APP_API_URL}/record/photo/${record._id}`}
-					src={`${DefaultRecord}`}
-					alt={record.title}
-					// onError={(i) => (i.target.src = `${DefaultRecord}`)}
+					src={`${DefaultPatient}`}
+					alt={patient.title}
+					// onError={(i) => (i.target.src = `${Defaultpatient}`)}
 					className="img-thunbnail mb-3"
 					style={{
 						height: "300px",
@@ -73,34 +73,34 @@ class SingleRecord extends Component {
 					}}
 				/>
 
-				<p className="card-text">{record.body}</p>
+				<p className="card-text">{patient.body}</p>
 				<br />
 				<p className="font-italic mark">
 					Posted by <Link to={`${posterId}`}>{posterName} </Link>
-					on {new Date(record.created).toDateString()}
+					on {new Date(patient.created).toDateString()}
 				</p>
 				<div className="d-inline-block">
 					<Link
-						to={`/findrecords`}
+						to={`/findpatients`}
 						className="btn btn-raised btn-primary btn-sm mr-5"
 					>
-						Back to records
+						Back to patients
 					</Link>
 
 					{isAuthenticated().user &&
-						isAuthenticated().user._id == record.postedBy && (
+						isAuthenticated().user._id == patient.postedBy && (
 							<>
 								<Link
-									to={`/record/edit/${record._id}`}
+									to={`/patient/edit/${patient._id}`}
 									className="btn btn-raised btn-warning btn-sm mr-5"
 								>
-									Update Record
+									Update patient
 								</Link>
 								<button
 									onClick={this.deleteConfirmed}
 									className="btn btn-raised btn-danger"
 								>
-									Delete Record
+									Delete patient
 								</button>
 							</>
 						)}
@@ -112,16 +112,16 @@ class SingleRecord extends Component {
 									<h5 className="card-title">Admin</h5>
 									<p className="mb-2 text-danger">Edit/Delete as an Admin</p>
 									<Link
-										to={`/record/edit/${record._id}`}
+										to={`/patient/edit/${patient._id}`}
 										className="btn btn-raised btn-warning btn-sm mr-5"
 									>
-										Update Record
+										Update patient
 									</Link>
 									<button
 										onClick={this.deleteConfirmed}
 										className="btn btn-raised btn-danger"
 									>
-										Delete Record
+										Delete patient
 									</button>
 								</div>
 							</div>
@@ -133,7 +133,7 @@ class SingleRecord extends Component {
 	};
 
 	render() {
-		const { commentId, record, redirectToHome, redirectToSignin } = this.state;
+		const { commentId, patient, redirectToHome, redirectToSignin } = this.state;
 
 		if (redirectToHome) {
 			return <Redirect to={`/`} />;
@@ -143,21 +143,21 @@ class SingleRecord extends Component {
 
 		return (
 			<div className="container">
-				<h2 className="display-2 mt-5 mb-5">{record.title}</h2>
+				<h2 className="display-2 mt-5 mb-5">{patient.title}</h2>
 
-				{!record ? (
+				{!patient ? (
 					<div className="jumbotron text-center">
 						<h2>Loading...</h2>
 					</div>
 				) : (
-					this.renderRecord(record)
+					this.renderPatient(patient)
 				)}
 
 
-                <Comment recordId={record._id}  />
+                <Comment patientId={patient._id}  />
 			</div>
 		);
 	}
 }
 
-export default SingleRecord;
+export default SinglePatient;
