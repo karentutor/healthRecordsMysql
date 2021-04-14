@@ -55,8 +55,8 @@ exports.findPeople = (req, res) => {
 };
 
 exports.getUser = (req, res) => {
-    req.profile.password = undefined;
-    req.profile.salt = undefined;
+//    req.profile.password = undefined;
+//    req.profile.salt = undefined;
     return res.json(req.profile);
 };
 
