@@ -1,20 +1,5 @@
 
-export const comment = (userId, token, patientId, body, postedBy, role, title) => {
-    console.log('here');
-    return fetch(`${process.env.REACT_APP_API_URL}/patient/comment`, {
-        method: "PUT",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ userId, token, patientId, body, postedBy, role, title })
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
-};
+
 
 export const create = (userId, token, patient) => {
     return fetch(`${process.env.REACT_APP_API_URL}/patient/new/${userId}`, {

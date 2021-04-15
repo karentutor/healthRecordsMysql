@@ -25,11 +25,6 @@ const router = express.Router();
 router.get('/patients', getPatients);
 
 
-// comments
-router.put('/patient/comment', requireSignin, comment);
-router.put('/patient/uncomment', requireSignin, uncomment);
-router.put('/patient/updatecomment', requireSignin, updateComment);
-
 
 // patient routes
 router.post('/patient/new/:userId', requireSignin, createPatient, createPatientValidator);

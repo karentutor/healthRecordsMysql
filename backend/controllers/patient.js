@@ -2,38 +2,38 @@ const formidable = require("formidable");
 const fs = require("fs");
 const _ = require("lodash");
 
-exports.comment = (req, res) => {
-	console.log(req.body);
+// exports.comment = (req, res) => {
+// 	console.log(req.body);
 
-	const { patientId, title, body, postedBy, role } = req.body;
+// 	const { patientId, title, body, postedBy, role } = req.body;
 
-	let query =
-		"INSERT INTO `comments` (patientId, title, body, postedBy, role) VALUES ('" +
-		patientId +
-		"', '" +
-		title +
-		"', '" +
-		body +
-		"', '" +
-		postedBy +
-		"', '" +
-		role +
-		"')";
-	db.query(query, (err) => {
-		if (err) {
-			return res.status(500).send(err);
-		}
-		let query = "SELECT * FROM `comments` WHERE comments.patientId=" + patientId;
+// 	let query =
+// 		"INSERT INTO `comments` (patientId, title, body, postedBy, role) VALUES ('" +
+// 		patientId +
+// 		"', '" +
+// 		title +
+// 		"', '" +
+// 		body +
+// 		"', '" +
+// 		postedBy +
+// 		"', '" +
+// 		role +
+// 		"')";
+// 	db.query(query, (err) => {
+// 		if (err) {
+// 			return res.status(500).send(err);
+// 		}
+// 		let query = "SELECT * FROM `comments` WHERE comments.patientId=" + patientId;
 
-		db.query(query, (err, patient) => {
-			if (err) {
-				return res.status(500).send(err);
-			}
-			let data = JSON.parse(JSON.stringify(patient));
-			res.status(200).send(data); 
-		});
-	});
-};
+// 		db.query(query, (err, patient) => {
+// 			if (err) {
+// 				return res.status(500).send(err);
+// 			}
+// 			let data = JSON.parse(JSON.stringify(patient));
+// 			res.status(200).send(data); 
+// 		});
+// 	});
+// };
 
 exports.createPatient = (req, res, next) => {
 	

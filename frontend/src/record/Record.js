@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { comment, uncomment } from "./apiPatient";
+import { comment, uncomment } from "../patient/apiPatient";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import DefaultProfile from "../images/avatar.jpg";
 
-class Comment extends Component {
+class Record extends Component {
 	state = {
 		comments: "",
 		body: "",
@@ -30,10 +30,12 @@ class Comment extends Component {
 		const userId = isAuthenticated().user._id;
 		const role = isAuthenticated().user.role;
 		const token = isAuthenticated().token;
-		const recordId = this.props.recordId;
+		const patientId = this.props.patientId;
 		const { body, title } = this.state;
-
-		comment(userId, token, recordId, body, userId, role, title).then((data) => {
+	
+		comment
+/*this.props.parentCallbachild");
+((data) => {
 			if (data.error) {
 				console.log(data.error);
 			}
@@ -41,6 +43,8 @@ class Comment extends Component {
 			// dispatch fresh list of coments to parent (SinglePost)
 			//this.props.updateComments(data);
 		});
+
+		*/
 	};
 	render() {
 		const { error } = this.state;
@@ -82,4 +86,4 @@ class Comment extends Component {
 	}
 }
 
-export default Comment;
+export default Record;

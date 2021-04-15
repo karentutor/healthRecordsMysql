@@ -26,8 +26,9 @@ db.connect((err) => {
 });
 global.db = db;
 // bring in routes
-const patientRoutes = require('./routes/patient');
 const authRoutes = require('./routes/auth');
+const patientRoutes = require('./routes/patient');
+const recordRoutes = require('./routes/record');
 const userRoutes = require('./routes/user');
 // apiDocs
 /*
@@ -52,6 +53,7 @@ app.use(cors());
 
 app.use('/api', authRoutes);
 app.use('/api', patientRoutes);
+app.use('/api', recordRoutes);
 app.use('/api', userRoutes);
 app.use(function(err, req, res, next) {
     if (err.name === 'UnauthorizedError') {

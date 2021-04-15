@@ -3,7 +3,8 @@ import { singlePatient, remove } from "./apiPatient";
 import DefaultPatient from "../images/mountains.jpg";
 import { Link, Redirect } from "react-router-dom";
 import { isAuthenticated } from "../auth";
-import Comment from "./Comment";
+import NewRecord from '../record/NewRecord';
+import Records from '../record/Records';
 
 class SinglePatient extends Component {
 	state = {
@@ -11,8 +12,13 @@ class SinglePatient extends Component {
 		commentId: '',
 		redirectToHome: false,
 		redirectToSignin: false,
+		test: null
 	};
 
+
+ handleCallback = (userId, role, token, recordId, body, title) =>{
+	 console.log(userId, role, token, recordId, body, title);
+    }
 	componentDidMount = () => {
         const patientId = this.props.match.params.patientId;
 
@@ -90,7 +96,7 @@ class SinglePatient extends Component {
 						isAuthenticated().user._id == patient.postedBy && (
 							<>
 								<Link
-									to={`/patient/edit/${patient._id}`}
+									to={`/patient/edit/${patient.postedBy }`}
 									className="btn btn-raised btn-warning btn-sm mr-5"
 								>
 									Update patient
@@ -153,7 +159,8 @@ class SinglePatient extends Component {
 				)}
 
 
-                <Comment patientId={patient._id}  />
+				<NewRecord patient_id={patient.patient_id} parentCallback={this.handleCallback} />
+				<Records />
 			</div>
 		);
 	}
