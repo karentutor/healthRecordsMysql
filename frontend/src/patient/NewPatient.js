@@ -3,18 +3,18 @@ import { isAuthenticated } from "../auth";
 import { create } from "./apiPatient";
     import { Redirect } from "react-router-dom";
 
-class NewRecord extends Component {
+class NewPatient extends Component {
     constructor() {
         super();
         this.state = {
-            title: "",
-            body: "",
+            name: "",
+            information: "",
             photo: "",
             error: "",
             user: {},
             fileSize: 0,
             loading: false,
-            redirectToRecord: false
+            redirectPatient: false
         };
     }
 
@@ -24,7 +24,7 @@ class NewRecord extends Component {
     }
 
     isValid = () => {
-        const { title, body, fileSize } = this.state;
+        const { name, information, fileSize } = this.state;
         if (fileSize > 100000) {
             this.setState({
                 error: "File size should be less than 100kb",
@@ -32,7 +32,7 @@ class NewRecord extends Component {
             });
             return false;
         }
-        if (title.length === 0 || body.length === 0) {
+        if (name.length === 0 || information.length === 0) {
             this.setState({ error: "All fields are required", loading: false });
             return false;
         }
@@ -57,23 +57,22 @@ class NewRecord extends Component {
             const userId = isAuthenticated().user._id;
             const token = isAuthenticated().token;
 
-            console.log('here', userId, token)
 
             create(userId, token, this.formData).then(data => {
                 if (data.error) this.setState({ error: data.error });
                 else {
                     this.setState({
                         loading: false,
-                        title: "",
-                        body: "",
-                        redirectToRecord: true
+                        name: "",
+                        information: "",
+                        redirectToPatient: true
                     });
                 }
             });
         }
     };
 
-    newRecordForm = (title, body) => (
+    newPatientForm = (name, information) => (
         <form>
             <div className="form-group">
                 <label className="text-muted">Post Patient Photo</label>
@@ -85,22 +84,22 @@ class NewRecord extends Component {
                 />
             </div>
             <div className="form-group">
-                <label className="text-muted">Title</label>
+                <label className="text-muted">Name</label>
                 <input
-                    onChange={this.handleChange("title")}
+                    onChange={this.handleChange("name")}
                     type="text"
                     className="form-control"
-                    value={title}
+                    value={name}
                 />
             </div>
 
             <div className="form-group">
-                <label className="text-muted">Body</label>
+                <label className="text-muted">Information</label>
                 <textarea
-                    onChange={this.handleChange("body")}
+                    onChange={this.handleChange("information")}
                     type="text"
                     className="form-control"
-                    value={body}
+                    value={information}
                 />
             </div>
 
@@ -108,29 +107,29 @@ class NewRecord extends Component {
                 onClick={this.clickSubmit}
                 className="btn btn-raised btn-primary"
             >
-                Create Record
+                Create Patient
             </button>
         </form>
     );
 
     render() {
         const {
-            title,
-            body,
+            name,
+            information,
             photo,
             user,
             error,
             loading,
-            redirectToRecord
+            redirectToPatient
         } = this.state;
 
-        if (redirectToRecord) {
-            return <Redirect to={`/findrecords`} />;
+        if (redirectToPatient) {
+            return <Redirect to={`/findpatients`} />;
         }
 
         return (
             <div className="container">
-                <h2 className="mt-5 mb-5">Create a new patient record</h2>
+                <h2 className="mt-5 mb-5">Create a new patient</h2>
                 <div
                     className="alert alert-danger"
                     style={{ display: error ? "" : "none" }}
@@ -146,10 +145,10 @@ class NewRecord extends Component {
                     ""
                 )}
 
-                {this.newRecordForm(title, body)}
+                {this.newPatientForm(name, information)}
             </div>
         );
     }
 }
 
-export default NewRecord;
+export default NewPatient;

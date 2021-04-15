@@ -1,4 +1,4 @@
-exports.createRecordValidator = (req, res, next) => {
+exports.createPatientValidator = (req, res, next) => {
     // title
     req.check('title', 'Write a title').notEmpty();
     req.check('title', 'Title must be between 4 to 150 characters').isLength({

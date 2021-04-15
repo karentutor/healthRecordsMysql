@@ -82,21 +82,21 @@ const Menu = ({ history }) => (
 				<React.Fragment>
 					<li className="nav-item">
 						<Link
-							to={`/record/create`}
+							to={`/patient/create`}
 							style={isActive(history, `/post/create`)}
 							className="nav-link"
 						>
-							Create Record
+							Create Patient
 						</Link>
 					</li>
 
 					<li className="nav-item">
 						<Link
-							to={`/findrecords`}
-							style={isActive(history, `/findrecords`)}
+							to={`/findpatients`}
+							style={isActive(history, `/findpatients`)}
 							className="nav-link"
 						>
-							Find Record
+							Find Patient
 						</Link>
 					</li>
 

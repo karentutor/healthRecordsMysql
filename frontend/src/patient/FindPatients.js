@@ -3,11 +3,11 @@ import { list } from "./apiPatient";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
 
-class FindRecords extends Component {
+class FindPatients extends Component {
     constructor() {
         super();
         this.state = {
-            records: [],
+            patients: [],
             error: "",
             open: false
         };
@@ -21,26 +21,26 @@ class FindRecords extends Component {
             if (data.error) {
                 console.log(data.error);
             } else {
-                this.setState({ records: data });
+                this.setState({ patients: data });
             }
         });
     }
 
 
-    renderRecords = records => {
+    renderPatients = patients => {
 
         return (
             <div className="row">
-                {records.map((record, i) => (
+                {patients.map((patient, i) => (
                     <div className="card col-md-4" key={i}>
                         <div className="card-body">
-                            <h5 className="card-title">{record.title}</h5>
-                            <p className="card-text">{record.body}</p>
+                            <h5 className="card-title">{patient.name}</h5>
+                            <p className="card-text">{patient.information}</p>
                             <Link
-                                to={`/record/${record._id}`}
+                                to={`/patient/${patient._id}`}
                                 className="btn btn-raised btn-primary btn-sm"
                             >
-                                View Record
+                                View Patient
                         </Link>
 
                         </div>
@@ -51,16 +51,16 @@ class FindRecords extends Component {
     }
 
     render() {
-        const { records } = this.state;
+        const { patients } = this.state;
         return (
             <div className="container">
-                <h2 className="mt-5 mb-5">Find Record</h2>
+                <h2 className="mt-5 mb-5">Find Patient</h2>
 
-                {this.renderRecords(records)}
+                {this.renderPatients(patients)}
             </div>
         );
     }
 
 }
 
-export default FindRecords;
+export default FindPatients;

@@ -7,7 +7,7 @@ import Comment from "./Comment";
 
 class SinglePatient extends Component {
 	state = {
-		record: "",
+		patient: "",
 		commentId: '',
 		redirectToHome: false,
 		redirectToSignin: false,
@@ -20,11 +20,10 @@ class SinglePatient extends Component {
 			if (data.error) {
 				console.log(data.error);
 			} else {
-				console.log(data)
-				// this.setState({
+				this.setState({
 				// 	comments: dataComments,
-				// 	patient: data
-//				});
+				patient: data
+				});
 			}
 		});
 	};
@@ -61,9 +60,9 @@ class SinglePatient extends Component {
 		return (
 			<div className="card-body">
 				<img
-					// src={`${process.env.REACT_APP_API_URL}/record/photo/${record._id}`}
+					// src={`${process.env.REACT_APP_API_URL}/patient/photo/${patient._id}`}
 					src={`${DefaultPatient}`}
-					alt={patient.title}
+					alt={patient.name}
 					// onError={(i) => (i.target.src = `${Defaultpatient}`)}
 					className="img-thunbnail mb-3"
 					style={{
@@ -73,7 +72,7 @@ class SinglePatient extends Component {
 					}}
 				/>
 
-				<p className="card-text">{patient.body}</p>
+				<p className="card-text">{patient.information}</p>
 				<br />
 				<p className="font-italic mark">
 					Posted by <Link to={`${posterId}`}>{posterName} </Link>
@@ -143,7 +142,7 @@ class SinglePatient extends Component {
 
 		return (
 			<div className="container">
-				<h2 className="display-2 mt-5 mb-5">{patient.title}</h2>
+				<h2 className="display-2 mt-5 mb-5">{patient.name}</h2>
 
 				{!patient ? (
 					<div className="jumbotron text-center">
