@@ -4,7 +4,6 @@ const _ = require("lodash");
 
 exports.createRecord = (req, res, next) => {
 
-	console.log('hi');
 	let form = new formidable.IncomingForm();
 	form.keepExtensions = true;
 	form.parse(req, (err, fields, files) => {	
@@ -29,12 +28,12 @@ exports.createRecord = (req, res, next) => {
 		}
 */
 		const  {title, body} = fields;
-
+		const patientId = profile.patient_id;
 		let query =
-			"INSERT INTO `patients` (name, information, postedBy) VALUES ('" +
-			name +
+			"INSERT INTO `records` (title, body, postedBy) VALUES ('" +
+			title +
 			"', '" +
-			information +
+			body +
 			"', '" +
 			postedBy +
 			"')";
@@ -45,10 +44,13 @@ exports.createRecord = (req, res, next) => {
 			}
 			res.status(200).send(data);
 		});
-		*/
+		
 	});
 	next();
 };
+
+
+
 
 
 exports.getRecords = async (req, res) => {

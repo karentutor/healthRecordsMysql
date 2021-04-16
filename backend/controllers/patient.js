@@ -2,38 +2,6 @@ const formidable = require("formidable");
 const fs = require("fs");
 const _ = require("lodash");
 
-// exports.comment = (req, res) => {
-// 	console.log(req.body);
-
-// 	const { patientId, title, body, postedBy, role } = req.body;
-
-// 	let query =
-// 		"INSERT INTO `comments` (patientId, title, body, postedBy, role) VALUES ('" +
-// 		patientId +
-// 		"', '" +
-// 		title +
-// 		"', '" +
-// 		body +
-// 		"', '" +
-// 		postedBy +
-// 		"', '" +
-// 		role +
-// 		"')";
-// 	db.query(query, (err) => {
-// 		if (err) {
-// 			return res.status(500).send(err);
-// 		}
-// 		let query = "SELECT * FROM `comments` WHERE comments.patientId=" + patientId;
-
-// 		db.query(query, (err, patient) => {
-// 			if (err) {
-// 				return res.status(500).send(err);
-// 			}
-// 			let data = JSON.parse(JSON.stringify(patient));
-// 			res.status(200).send(data); 
-// 		});
-// 	});
-// };
 
 exports.createPatient = (req, res, next) => {
 	
@@ -46,18 +14,11 @@ exports.createPatient = (req, res, next) => {
 			});
 		}
 
-		// req.profile.hashed_password = undefined;
-		// // req.profile.salt = undefined;
-
-		let _id = "121";
 		let name = fields.name;
 		let information = fields.information;
 		let postedBy = req.profile._id;
 		let role = req.profile.role;
 
-		// console.log(fields.body);
-		// console.log(req.profile._id);
-		// console.log('profile', req.params);
 
 		if (files.photo) {
 			//            patient.photo.data = fs.readFileSync(files.photo.path);
@@ -160,19 +121,18 @@ exports.patientsByUser = (req, res) => {
 };
 
 exports.patientById = (req, res, next, id) => {
-				let data = [];
-
-	let query =
-		"SELECT p._id as patient_id, p.name, p.information, p.postedBy, p.created, p.updated, u.name FROM `patients` as `p` INNER JOIN `users` as `u` ON p.postedBy = u._id WHERE p._id=" +
-		id;
+	let query = "SELECT p._id as patient_id, p.name, p.information, p.postedBy, p.created, p.updated, u.name FROM `patients` as `p` INNER JOIN `users` as `u` ON p.postedBy = u._id WHERE p._id=" +id;
 
 	db.query(query, (err, result) => {
+
 		if (err) {
 			return res.status(500).send(err);
+		} 
+		else {
+			let data = JSON.parse(JSON.stringify(result[0]));
+			req.patient = data; // adds profile object in req with user info
+			next();
 		}
-		let data = JSON.parse(JSON.stringify(result[0]));
-		req.patient = data; // adds profile object in req with user info
-		next();
 	});
 };
 
@@ -194,22 +154,32 @@ exports.updatePatient = (req, res, next) => {
 		patient = _.extend(patient, fields);
 		patient.updated = Date.now();
 
-		const { _id, title, body, postedBy, role } = patient;
+
+		const { patient_id, name, information, postedBy, role } = patient;
 
 		if (files.photo) {
 			//	patient.photo.data = fs.readFileSync(files.photo.path);
 			//	patient.photo.contentType = files.photo.type;
 		}
 
-		let query = `UPDATE patients SET title='${title}', body='${body}', postedBy=${postedBy}, role='${role}' WHERE _id=${_id}`;
+		let query = `UPDATE patients SET name='${name}', information='${information}', postedBy=${postedBy} WHERE _id=${patient_id}`;
 
 		db.query(query, (err, data) => {
 			if (err) {
 				return res.status(500).send(err);
 			}
-			res.status(200).send(data);
+			else {
+				let query = `SELECT * FROM patients WHERE _id=${patient_id}`;
+				db.query(query, (err, data) => {
+					if (err) {
+						return res.status(500).send(err);
+					} else {
+						return res.status(200).send(JSON.stringify(data[0]))
+					}
+				});
+			}
 		});
-	});
+	});//end form parse
 };
 
 exports.uncomment = (req, res) => {

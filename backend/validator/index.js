@@ -52,6 +52,7 @@ exports.userSignupValidator = (req, res, next) => {
     req.check('name', 'Name is required').notEmpty();
     // email is not null, valid and normalized
     req.check('email', 'Email must be between 3 to 32 characters')
+        .notEmpty()
         .matches(/.+\@.+\..+/)
         .withMessage('Email must contain @')
         .isLength({
@@ -76,8 +77,9 @@ exports.userSignupValidator = (req, res, next) => {
     next();
 };
 
-exports.userSigninValidator = (request, response, next) => {
-    request
+exports.userSigninValidator = (req, res, next) => {
+
+    req
         .check('email', 'Email must be between 3 to 32 characters')
         .matches(
             /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
@@ -87,12 +89,14 @@ exports.userSigninValidator = (request, response, next) => {
             min: 4,
             max: 32
         });
-    request.check('password', 'Invalid Social Login Token!').notEmpty();
-    request
+    req
         .check('password')
         .isLength({ min: 6 })
-        .withMessage('Your social login token is invalid!');
-    const errors = request.validationErrors();
+        .withMessage('Your your login is too short');
+    
+    const errors = req.validationErrors();
+    
+    
     if (errors) {
         const firstError = errors.map(error => error.msg)[0];
         return res.status(400).json({ error: firstError });
