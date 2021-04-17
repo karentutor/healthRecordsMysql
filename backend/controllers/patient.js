@@ -43,18 +43,21 @@ exports.createPatient = (req, res, next) => {
 	});
 };
 
-exports.deletePatient = (req, res) => {
-	let _id = req.patient._id;
+exports.deletePatient = (req, res, next) => {
+
+    let _id = req.params.patientId;
+
 	let query = `DELETE FROM patients WHERE _id=${_id}`;
 	db.query(query, (err, data) => {
 		if (err) {
 			return res.status(500).send(err);
 		}
 		return res.status(200).json({
-			message: "success",
+		message: "success",
 		});
 	});
 };
+
 
 exports.getPatients = async (req, res) => {
 	let query = "SELECT * FROM `patients` ";
@@ -135,6 +138,7 @@ exports.patientById = (req, res, next, id) => {
 		}
 	});
 };
+
 
 exports.singlePatient = (req, res) => {
 	return res.json(req.patient);
