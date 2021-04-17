@@ -137,6 +137,8 @@ class SinglePatient extends Component {
 		);
 	};
 
+
+
 	render() {
 		const { commentId, patient, redirectToHome, redirectToSignin } = this.state;
 

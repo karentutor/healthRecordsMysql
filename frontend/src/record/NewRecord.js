@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { isAuthenticated } from "../auth";
 import { create } from "./apiRecord";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 class NewRecord extends Component {
 	constructor() {
@@ -9,6 +9,7 @@ class NewRecord extends Component {
 		this.state = {
 			title: "",
 			body: "",
+			message: "",
 			photo: "",
 			error: "",
 			user: {},
@@ -39,10 +40,9 @@ class NewRecord extends Component {
 		return true;
 	};
 
-	handleChange = name => event => {
+	handleChange = (name) => (event) => {
 		this.setState({ error: "" });
-		const value =
-			name === "photo" ? event.target.files[0] : event.target.value;
+		const value = name === "photo" ? event.target.files[0] : event.target.value;
 
 		const fileSize = name === "photo" ? event.target.files[0].size : 0;
 		this.formData.set(name, value);
@@ -56,13 +56,15 @@ class NewRecord extends Component {
 		const token = isAuthenticated().token;
 		const patientId = this.props.patient_id;
 
-		this.formData.set('karen', patientId);
+		this.formData.set("postedBy", this.state.user._id);
+		this.formData.set("role", this.state.user.role);
 
 		create(patientId, token, this.formData).then((data) => {
 			if (data.error) this.setState({ error: data.error });
 			else {
 				this.setState({
 					loading: false,
+					message: "Record updated",
 					title: "",
 					body: "",
 					redirectToPatient: true,
@@ -112,6 +114,7 @@ class NewRecord extends Component {
 		const {
 			title,
 			body,
+			message,
 			photo,
 			user,
 			error,
@@ -126,13 +129,20 @@ class NewRecord extends Component {
 		return (
 			<div className="container">
 				<h2 className="mt-5 mb-5">Create a New Patient Record</h2>
+
+				<div
+					className="alert alert-success"
+					style={{ display: message ? "" : "none" }}
+				>
+					{message}
+				</div>
+
 				<div
 					className="alert alert-danger"
 					style={{ display: error ? "" : "none" }}
 				>
 					{error}
 				</div>
-
 
 				{loading ? (
 					<div className="jumbotron text-center">

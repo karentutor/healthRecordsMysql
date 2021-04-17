@@ -40,29 +40,53 @@ class Records extends Component {
 	renderRecords = (records) => {
 		return (
 			<div className="row">
-				{records.map((record, i) => {
-					const posterId = record.postedBy
-						? `/user/${record.postedBy._id}`
-						: "";
-					const posterName = record.postedBy
-						? record.postedBy.name
-						: " Unknown";
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">#id</th>
+							<th scope="col">Title</th>
+							<th scope="col">Body</th>
+							<th scope="col">Edit</th>
+							<th scope="col">Delete</th>
+						</tr>
+					</thead>
+					<tbody>
+						{records.map((record, i) => {
+							const posterId = record.postedBy
+								? `/user/${record.postedBy._id}`
+								: "";
+							const posterName = record.postedBy
+								? record.postedBy.name
+								: " Unknown";
 
-					return (
-						<>
-							<ul class="list-group">
-								<li class="list-group-item">
-									<Link
-										to={`/record/${record._id}`}
-										className="btn"
-									>
-										{record.title}
-									</Link>
-								</li>
-							</ul>
-						</>
-					);
-				})}
+							return (
+								<>
+									<tr>
+										<th scope="row">{record._id}</th>
+										<td>{record.title}</td>
+										<td>{record.body}</td>
+										<td>
+											<Link
+												to={`/record/${record._id}`}
+												className="btn btn-raised btn-warning btn-sm mr-5"
+											>
+												View or Edit
+											</Link>
+										</td>
+										<td>
+											<Link
+												to={`/record/${record._id}`}
+												className="btn btn-raised btn-danger btn-sm mr-5"
+											>
+												Delete
+											</Link>
+										</td>
+									</tr>
+								</>
+							);
+						})}
+					</tbody>
+				</table>
 			</div>
 		);
 	};

@@ -3,63 +3,71 @@ const fs = require("fs");
 const _ = require("lodash");
 
 exports.createRecord = (req, res, next) => {
-
 	let form = new formidable.IncomingForm();
 	form.keepExtensions = true;
-	form.parse(req, (err, fields, files) => {	
+	form.parse(req, (err, fields, files) => {
 		if (err) {
 			return res.status(400).json({
 				error: "Image could not be uploaded",
 			});
 		}
 
-		// req.profile.hashed_password = undefined;
-		// // req.profile.salt = undefined;
-
-//		 console.log('hi');
-//		console.log('profile', req);
-		console.table(fields);
-		 console.log('profile', req.params);
-		 console.log('patient', req.patient);
-
-/*		if (files.photo) {
-			//            patient.photo.data = fs.readFileSync(files.photo.path);
+		/*		if (files.photo) {
+			//            patient.photo.data = fs .readFileSync(files.photo.path);
 			//           patient.photo.contentType = files.photo.type;
 		}
 */
-		const  {title, body} = fields;
-		const patientId = profile.patient_id;
+		const { body, postedBy, role, title } = fields;
+		const patientId = req.patient.patient_id;
 		let query =
-			"INSERT INTO `records` (title, body, postedBy) VALUES ('" +
+			"INSERT INTO `records` (patient_id, title, body, postedBy, role) VALUES ('" +
+			patientId +
+			"', '" +
 			title +
 			"', '" +
 			body +
 			"', '" +
 			postedBy +
+			"', '" +
+			role +
 			"')";
-		
+
 		db.query(query, (err, data) => {
 			if (err) {
 				return res.status(500).send(err);
+			} else {
+				res.status(200).send({ message: 'Record updated'});
+				
 			}
-			res.status(200).send(data);
 		});
-		
 	});
-	next();
 };
 
-
-
-
-
 exports.getRecords = async (req, res) => {
-    let query = "SELECT * FROM `records` ";
+	let query = "SELECT * FROM `records` ";
 
 	db.query(query, (err, data) => {
 		if (err) {
 			return res.status(500).send(err);
 		}
 		res.status(200).send(data);
+	});
+};
+
+exports.recordById = (req, res, next) => {
+
+	const _id = req.params.recordId;
+
+	let query = "SELECT r._id as record_id, r.title, r.body, r.postedBy, r.created, r.updated, u.name  FROM `records` as `r` INNER JOIN `users` as `u` ON r.postedBy = u._id WHERE r._id=" +_id;
+
+	db.query(query, (err, result) => {
+
+		if (err) {
+			return res.status(500).send(err);
+		} 
+		else {
+			let data = JSON.parse(JSON.stringify(result[0]));
+			res.status(200).json(data);
+		}
 	});
 };
