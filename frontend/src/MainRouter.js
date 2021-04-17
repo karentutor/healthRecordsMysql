@@ -13,6 +13,7 @@ import NewPatient from "./patient/NewPatient";
 import EditPatient from "./patient/EditPatient";
 import SinglePatient from "./patient/SinglePatient";
 import SingleRecord from "./record/SingleRecord";
+import EditRecord from "./record/EditRecord";
 import PrivateRoute from "./auth/PrivateRoute";
 import ResetPassword from "./user/ResetPassword";
 import Admin from "./admin/Admin";
@@ -36,6 +37,7 @@ const MainRouter = () => (
 				component={EditPatient}
 			/>
 			<Route exact path="/record/:recordId" component={SingleRecord} />
+			<Route exact path="/record/edit/:recordId" component={EditRecord} />
 
 			<Route exact path="/users" component={Users} />
 			<Route exact path="/signup" component={Signup} />

@@ -9,14 +9,12 @@ class SingleRecord extends Component {
 		record: "",
 		redirectToHome: false,
 		redirectToSignin: false,
-		test: null,
 	};
 
-    componentDidMount = () => {
-        
-        const recordId = this.props.match.params.recordId;
+	componentDidMount = () => {
+		const recordId = this.props.match.params.recordId;
 
-        singleRecord(recordId).then((data) => {
+		singleRecord(recordId).then((data) => {
 			if (data.error) {
 				console.log(data.error);
 			} else {
@@ -27,28 +25,24 @@ class SingleRecord extends Component {
 		});
 	};
 
-	// deleteRecord = () => {
-	// 	const recordId = this.props.match.params.recordId;
-	// 	const token = isAuthenticated().token;
-	// 	remove(recordId, token).then((data) => {
-	// 		if (data.error) {
-	// 			console.log(data.error);
-	// 		} else {
-	// 			this.setState({ redirectToHome: true });
-	// 		}
-	// 	});
-	// };
+	deleteRecord = () => {
+		const recordId = this.props.match.params.recordId;
+		const token = isAuthenticated().token;
+		remove(recordId, token).then((data) => {
+			if (data.error) {
+				console.log(data.error);
+			} else {
+				this.setState({ redirectToHome: true });
+			}
+		});
+	};
 
-	// deleteConfirmed = () => {
-	// 	let answer = window.confirm("Are you sure you want to delete your record?");
-	// 	if (answer) {
-	// 		this.deleteRecord();
-	// 	}
-	// };
-
-	// updateComments = (comments) => {
-	// 	this.setState({ comments });
-	// };
+	deleteConfirmed = () => {
+		let answer = window.confirm("Are you sure you want to delete your record?");
+		if (answer) {
+			this.deleteRecord();
+		}
+	};
 
 	renderRecord = (record) => {
 		const posterId = record.postedBy ? `/user/${record.postedBy}` : "";
@@ -59,7 +53,7 @@ class SingleRecord extends Component {
 				<img
 					// src={`${process.env.REACT_APP_API_URL}/patient/photo/${patient._id}`}
 					src={`${DefaultPatient}`}
-					alt={record.name}
+					alt={record.title}
 					// onError={(i) => (i.target.src = `${Defaultpatient}`)}
 					className="img-thunbnail mb-3"
 					style={{
@@ -68,21 +62,15 @@ class SingleRecord extends Component {
 						objectFit: "cover",
 					}}
 				/>
+				<p className="card-text">{record.title}</p>
+				<p className="card-text">{record.body}</p>
 
-				<p className="card-text">{record.information}</p>
 				<br />
 				<p className="font-italic mark">
 					Posted by <Link to={`${posterId}`}>{posterName} </Link>
 					on {new Date(record.created).toDateString()}
 				</p>
 				<div className="d-inline-block">
-					<Link
-						to={`/findrecords`}
-						className="btn btn-raised btn-primary btn-sm mr-5"
-					>
-						Back to records
-					</Link>
-
 					{isAuthenticated().user &&
 						isAuthenticated().user._id == record.postedBy && (
 							<>
@@ -129,29 +117,26 @@ class SingleRecord extends Component {
 	};
 
 	render() {
-		// const { commentId, record, redirectToHome, redirectToSignin } = this.state;
+		const { record, redirectToHome, redirectToSignin } = this.state;
 
-		// if (redirectToHome) {
-		// 	return <Redirect to={`/`} />;
-		// } else if (redirectToSignin) {
-		// 	return <Redirect to={`/signin`} />;
-		// }
+		if (redirectToHome) {
+			return <Redirect to={`/`} />;
+		} else if (redirectToSignin) {
+			return <Redirect to={`/signin`} />;
+		}
 
-        return (
-            
-			// <div className="container">
-			// 	<h2 className="display-2 mt-5 mb-5">{record.name}</h2>
+		return (
+			<div className="container">
+				<h2 className="display-2 mt-5 mb-5">{record.title}</h2>
 
-			// 	{!record ? (
-			// 		<div className="jumbotron text-center">
-			// 			<h2>Loading...</h2>
-			// 		</div>
-			// 	) : (
-			// 		//this.renderRecord(record)
-            //             <p>hi</p>
-			// 	)}
-			// </div>
-            <p>hi</p>
+				{!record ? (
+					<div className="jumbotron text-center">
+						<h2>Loading...</h2>
+					</div>
+				) : (
+					this.renderRecord(record)
+				)}
+			</div>
 		);
 	}
 }

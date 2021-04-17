@@ -36,12 +36,31 @@ exports.createRecord = (req, res, next) => {
 			if (err) {
 				return res.status(500).send(err);
 			} else {
-				res.status(200).send({ message: 'Record updated'});
+				res.status(200).send({ message: 'Record created'});
 				
 			}
 		});
 	});
 };
+
+exports.deleteRecord = (req, res, next) => {
+
+    let _id = req.params.recordId;
+
+	let query = `DELETE FROM records WHERE _id=${_id}`;
+	db.query(query, (err, data) => {
+		if (err) {
+			return res.status(500).send(err);
+		}
+		return res.status(200).json({
+		message: "success",
+		});
+	});
+};
+exports.editRecord = async(req,res) => {
+	console.log('h');
+	next();
+}
 
 exports.getRecords = async (req, res) => {
 	let query = "SELECT * FROM `records` ";

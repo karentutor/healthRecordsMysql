@@ -2,6 +2,8 @@ const express = require('express');
 
 const {
     createRecord,
+    editRecord,
+    deleteRecord,
     getRecords,
     recordById
 } = require('../controllers/record');
@@ -16,7 +18,10 @@ const router = express.Router();
 
 router.get('/records', getRecords);
 router.get('/record/:recordId', recordById);
-router.post('/record/new/:recordId', createRecord);
+router.delete('/record/:recordId', deleteRecord);
+router.post('/record/new/:patientId', createRecord);
+router.post('/record/edit/:recordId', editRecord);
+
 
 // any route containing :userId, our app will first execute userById()
 router.param('userId', userById);

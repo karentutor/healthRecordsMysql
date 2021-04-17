@@ -42,8 +42,6 @@ export const remove = (recordId, token) => {
 
 export const singleRecord = recordId => {
 
-    console.log('here');
-
     return fetch(`${process.env.REACT_APP_API_URL}/record/${recordId}`, {
         method: "GET"
     })
@@ -52,5 +50,23 @@ export const singleRecord = recordId => {
         })
         .catch(err => console.log(err));
 };
+
+export const update = (recordId, token, record) => {
+    
+    return fetch(`${process.env.REACT_APP_API_URL}/record/edit/
+    ${recordId}`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: record
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
 
 

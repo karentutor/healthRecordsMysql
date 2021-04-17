@@ -12,13 +12,20 @@ class SinglePatient extends Component {
 		commentId: '',
 		redirectToHome: false,
 		redirectToSignin: false,
-		test: null
+		updateRecords: 'false'
 	};
 
 
- handleCallback = (userId, role, token, recordId, body, title) =>{
-	 console.log(userId, role, token, recordId, body, title);
-    }
+	handleCallback = () => {
+
+				console.log(this.state.updateRecords);
+
+		if (this.state.updateRecords == 'false') this.setState({ updateRecords: 'true' })
+		else if (this.state.updateRecords == 'true') this.setState({ updateRecords: 'false' })
+		console.log(this.state.updateRecords);
+	
+	}
+
 	componentDidMount = () => {
         const patientId = this.props.match.params.patientId;
 
