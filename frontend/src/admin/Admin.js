@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Records from "../patient/Patients";
+import Patients from "../patient/Patients";
 import Users from "../user/Users";
 import { isAuthenticated } from "../auth";
 import { Redirect } from "react-router-dom";
@@ -29,9 +29,9 @@ class Admin extends Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-6">
-                            <h2>Posts</h2>
+                            <h2>Patients</h2>
                             <hr />
-                            <Records />
+                            <Patients />
                         </div>
                         <div className="col-md-6">
                             <h2>Users</h2>

@@ -7,65 +7,65 @@ class Patients extends Component {
 	constructor() {
 		super();
 		this.state = {
-			records: [],
+			patients: [],
 			page: 1,
 		};
 	}
 
-	loadRecords = (page) => {
+	loadPatients = (page) => {
 		list(page).then((data) => {
 			if (data.error) {
 				console.log(data.error);
 			} else {
-				this.setState({ records: data });
+				this.setState({ patients: data });
 			}
 		});
 	};
 
 	componentDidMount() {
-		this.loadRecords(this.state.page);
+		this.loadPatients(this.state.page);
 	}
 
 	loadMore = (number) => {
 		this.setState({ page: this.state.page + number });
-		this.loadRecords(this.state.page + number);
+		this.loadPatients(this.state.page + number);
 	};
 
 	loadLess = (number) => {
 		this.setState({ page: this.state.page - number });
-		this.loadRecords(this.state.page - number);
+		this.loadPatients(this.state.page - number);
 	};
 
-	renderRecords = (records) => {
+	renderPatients = (patients) => {
 		return (
 			<div className="row">
-				{records.map((record, i) => {
-					const posterId = record.postedBy
-						? `/user/${record.postedBy._id}`
+				{patients.map((patient, i) => {
+					const posterId = patient.postedBy
+						? `/user/${patient.postedBy._id}`
 						: "";
-					const posterName = record.postedBy
-						? record.postedBy.name
+					const posterName = patient.postedBy
+						? patient.postedBy.name
 						: " Unknown";
 
 					return (
 						<div className="card col-md-4" key={i}>
 							<div className="card-body">
 								<img
-									src={`${process.env.REACT_APP_API_URL}/record/photo/${record._id}`}
-									alt={record.title}
+									src={`${process.env.REACT_APP_API_URL}/patient/photo/${patient._id}`}
+									alt={patient.title}
 									onError={(i) => (i.target.src = `${DefaultPatient}`)}
 									className="img-thunbnail mb-3"
 									style={{ height: "200px", width: "100%" }}
 								/>
-								<h5 className="card-title">{record.title}</h5>
-								<p className="card-text">{record.body.substring(0, 100)}</p>
+								<h5 className="card-title">{patient.title}</h5>
+								<p className="card-text">{patient.information.substring(0, 100)}</p>
 								<br />
 								<p className="font-italic mark">
 									Posted by <Link to={`${posterId}`}>{posterName} </Link>
-									on {new Date(record.created).toDateString()}
+									on {new Date(patient.created).toDateString()}
 								</p>
 								<Link
-									to={`/record/${record._id}`}
+									to={`/patient/${patient._id}`}
 									className="btn btn-raised btn-primary btn-sm"
 								>
 									Read more
@@ -79,14 +79,14 @@ class Patients extends Component {
 	};
 
 	render() {
-		const { records, page } = this.state;
+		const { patients, page } = this.state;
 		return (
 			<div className="container">
 				<h2 className="mt-5 mb-5">
-					{!records.length ? "No more records!" : "Recent records"}
+					{!patients.length ? "No more patients!" : "Recent patients"}
 				</h2>
 
-				{this.renderRecords(records)}
+				{this.renderPatients(patients)}
 
 				{page > 1 ? (
 					<button
@@ -99,7 +99,7 @@ class Patients extends Component {
 					""
 				)}
 
-				{records.length ? (
+				{patients.length ? (
 					<button
 						className="btn btn-raised btn-success mt-5 mb-5"
 						onClick={() => this.loadMore(1)}

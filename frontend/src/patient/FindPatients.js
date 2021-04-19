@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { list } from "./apiPatient";
+import { list, listByUser } from "./apiPatient";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
 
@@ -17,7 +17,7 @@ class FindPatients extends Component {
         const userId = isAuthenticated().user._id;
         const token = isAuthenticated().token;
 
-        list().then(data => {
+        listByUser(userId, token).then(data => {
             if (data.error) {
                 console.log(data.error);
             } else {
@@ -37,7 +37,7 @@ class FindPatients extends Component {
                             <h5 className="card-title">{patient.name}</h5>
                             <p className="card-text">{patient.information}</p>
                             <Link
-                                to={`/patient/${patient._id}`}
+                                to={`/patient/${patient.patient_id}`}
                                 className="btn btn-raised btn-primary btn-sm"
                             >
                                 View Patient

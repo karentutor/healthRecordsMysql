@@ -15,6 +15,8 @@ hashPassword = (password) => {
 };
 
 exports.signup = (req, res, next) => {
+
+	console.log('hcl');
 	let name = req.body.name;
 	let email = req.body.email;
 	let password = req.body.password;

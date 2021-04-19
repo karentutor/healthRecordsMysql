@@ -59,8 +59,6 @@ class NewRecord extends Component {
 		this.formData.set("postedBy", this.state.user._id);
 		this.formData.set("role", this.state.user.role);
 
-		this.props.parentCallback();
-
 		create(patientId, token, this.formData).then((data) => {
 			if (data.error) this.setState({ error: data.error });
 			else {

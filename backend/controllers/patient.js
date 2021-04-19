@@ -90,37 +90,20 @@ exports.photo = (req, res, next) => {
 };
 
 exports.patientsByUser = (req, res) => {
-	// get patient
-	let postedBy = req.patient.postedBy;
 
-	let query =
-		"SELECT r._id, r.title, r.body, r.postedBy, r.created, r.updated, r.role, u.name FROM `patients` as `r` INNER JOIN `users` as `u` on r.postedBy = u._id WHERE r._postedBy = '" +
-		postedBy +
+	let postedBy = req.profile._id;
+	let query = "SELECT p._id as patient_id, p.name, p.information, p.postedBy, p.created, p.updated, u.name FROM `patients` as `p` INNER JOIN `users` as `u` on p.postedBy = u._id WHERE p.postedBy = '" +
+	postedBy +
 		"'";
+	
+	console.log(query);
+	db.query(query, (err, data) => {
+	if (err) {
+	 		return res.status(500).send(err);
+	 	}
+		res.status(200).json(data);
+ });
 
-	//	console.log(query);
-
-	db.query(query, (err, patient) => {
-		if (err) {
-			return res.status(500).send(err);
-		}
-		let data = JSON.parse(JSON.stringify(patient[0]));
-		req.patient = data; // adds profile object in req with user info
-		next();
-	});
-
-	Patient.find({ postedBy: req.profile._id })
-		.populate("postedBy", "_id name")
-		.select("_id title body created likes")
-		.sort("_created")
-		.exec((err, patients) => {
-			if (err) {
-				return res.status(400).json({
-					error: err,
-				});
-			}
-			res.json(patients);
-		});
 };
 
 exports.patientById = (req, res, next, id) => {

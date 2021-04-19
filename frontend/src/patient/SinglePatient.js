@@ -16,16 +16,6 @@ class SinglePatient extends Component {
 	};
 
 
-	handleCallback = () => {
-
-				console.log(this.state.updateRecords);
-
-		if (this.state.updateRecords == 'false') this.setState({ updateRecords: 'true' })
-		else if (this.state.updateRecords == 'true') this.setState({ updateRecords: 'false' })
-		console.log(this.state.updateRecords);
-	
-	}
-
 	componentDidMount = () => {
         const patientId = this.props.match.params.patientId;
 
@@ -103,7 +93,7 @@ class SinglePatient extends Component {
 						isAuthenticated().user._id == patient.postedBy && (
 							<>
 								<Link
-									to={`/patient/edit/${patient.postedBy }`}
+									to={`/patient/edit/${patient.patient_id }`}
 									className="btn btn-raised btn-warning btn-sm mr-5"
 								>
 									Update patient
@@ -119,12 +109,13 @@ class SinglePatient extends Component {
 
 					<div>
 						{isAuthenticated().user && isAuthenticated().user.role === "admin" && (
+
 							<div class="card mt-5">
 								<div className="card-body">
 									<h5 className="card-title">Admin</h5>
 									<p className="mb-2 text-danger">Edit/Delete as an Admin</p>
 									<Link
-										to={`/patient/edit/${patient._id}`}
+										to={`/patient/edit/${patient.patient_id}`}
 										className="btn btn-raised btn-warning btn-sm mr-5"
 									>
 										Update patient
@@ -168,7 +159,7 @@ class SinglePatient extends Component {
 				)}
 
 
-				<NewRecord patient_id={patient.patient_id} parentCallback={this.handleCallback} />
+				<NewRecord patient_id={patient.patient_id} />
 				<Records />
 			</div>
 		);

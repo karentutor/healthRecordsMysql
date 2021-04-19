@@ -7,8 +7,9 @@ const { userById } = require('../controllers/user');
 
 const router = express.Router();
 
-router.post('/signup', userSignupValidator, signup);
-router.post('/signin', userSigninValidator, signin);
+console.log('here');
+router.post('/signup', signup);
+router.post('/signin', signin);
 router.get('/signout', signout);
 
 
