@@ -42,16 +42,14 @@ exports.deleteUser = (req, res, next) => {
 };
 
 exports.findPeople = (req, res) => {
-    let following = req.profile.following;
-    following.push(req.profile._id);
-    User.find({ _id: { $nin: following } }, (err, users) => {
-        if (err) {
-            return res.status(400).json({
-                error: err
-            });
-        }
-        res.json(users);
-    }).select('name');
+
+	let query = `SELECT * FROM users`;
+	db.query(query, (err, data) => {
+		if (err) {
+			return res.status(500).send(err);
+		}
+		return res.status(200).json(data);
+	});
 };
 
 exports.getUser = (req, res) => {
@@ -89,18 +87,10 @@ exports.updateUser = (req, res, next) => {
             if (err) {
                 return res.status(500).send(err);
             }
+            res.status(200).json({ message: 'ok' })
         });
-            //            let user = JSON.parse(JSON.stringify(data[0]));
-        query = "SELECT * FROM `users` WHERE `_id` = '" + _id + "' ";
-         db.query(query, (err, data) => {
-                if (err) {
-                    return res.status(500).send(err);
-                }
-            res.send(data[0]);
-    
-            });
-
-        });
+ 
+    });
 }
 
 exports.userById = (req, res, next, id) => {

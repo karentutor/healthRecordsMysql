@@ -51,7 +51,6 @@ app.use(cookieParser());
 app.use(expressValidator());
 app.use(cors());
 
-console.log('here');
 
 app.use('/api', authRoutes);
 app.use('/api', patientRoutes);

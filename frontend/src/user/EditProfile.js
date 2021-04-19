@@ -44,7 +44,7 @@ class EditProfile extends Component {
   }
 
   isValid = () => {
-    const { name, email, password, fileSize } = this.state;
+    const { name, email, fileSize } = this.state;
     if (fileSize > 1000000) {
       this.setState({
         error: "File size should be less than 100kb",
@@ -60,13 +60,6 @@ class EditProfile extends Component {
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       this.setState({
         error: "A valid Email is required",
-        loading: false
-      });
-      return false;
-    }
-    if (password.length >= 1 && password.length <= 5) {
-      this.setState({
-        error: "Password must be at least 6 characters long",
         loading: false
       });
       return false;
@@ -139,25 +132,6 @@ class EditProfile extends Component {
         />
       </div>
 
-      <div className="form-group">
-        <label className="text-muted">About</label>
-        <textarea
-          onChange={this.handleChange("about")}
-          type="text"
-          className="form-control"
-          value={about}
-        />
-      </div>
-
-      <div className="form-group">
-        <label className="text-muted">Password</label>
-        <input
-          onChange={this.handleChange("password")}
-          type="password"
-          className="form-control"
-          value={password}
-        />
-      </div>
       <button onClick={this.clickSubmit} className="btn btn-raised btn-primary">
         Update
       </button>

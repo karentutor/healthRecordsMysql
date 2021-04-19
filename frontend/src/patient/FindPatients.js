@@ -16,16 +16,27 @@ class FindPatients extends Component {
     componentDidMount() {
         const userId = isAuthenticated().user._id;
         const token = isAuthenticated().token;
+        const role = isAuthenticated().user.role;
 
-        listByUser(userId, token).then(data => {
-            if (data.error) {
-                console.log(data.error);
-            } else {
-                this.setState({ patients: data });
-            }
-        });
+        if (role === 'admin') {
+            
+            list().then(data => {
+                if (data.error) {
+                    console.log(data.error);
+                } else {
+                    this.setState({ patients: data });
+                }
+            });
+        } else {
+            listByUser(userId, token).then(data => {
+                if (data.error) {
+                    console.log(data.error);
+                } else {
+                    this.setState({ patients: data });
+                }
+            });
+        }
     }
-
 
     renderPatients = patients => {
 
