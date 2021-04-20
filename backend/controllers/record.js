@@ -90,3 +90,22 @@ exports.recordById = (req, res, next) => {
 		}
 	});
 };
+
+exports.recordsByPatientId = (req, res, next) => {
+
+
+	console.log(req);
+	next();
+	// let query = "SELECT r._id as record_id, r.title, r.body, r.postedBy, r.created, r.updated, u.name  FROM `records` as `r` INNER JOIN `users` as `u` ON r.postedBy = u._id WHERE r._id=" +_id;
+
+	// db.query(query, (err, result) => {
+
+	// 	if (err) {
+	// 		return res.status(500).send(err);
+	// 	} 
+	// 	else {
+	// 		let data = JSON.parse(JSON.stringify(result[0]));
+	// 		res.status(200).json(data);
+	// 	}
+	// });
+};

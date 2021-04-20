@@ -19,7 +19,6 @@ class FindPatients extends Component {
         const role = isAuthenticated().user.role;
 
         if (role === 'admin') {
-            
             list().then(data => {
                 if (data.error) {
                     console.log(data.error);

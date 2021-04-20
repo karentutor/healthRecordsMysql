@@ -17,7 +17,8 @@ class SinglePatient extends Component {
 
 
 	componentDidMount = () => {
-        const patientId = this.props.match.params.patientId;
+		const patientId = this.props.match.params.patientId;
+		
 
 		singlePatient(patientId).then((data) => {
 			if (data.error) {
@@ -138,7 +139,7 @@ class SinglePatient extends Component {
 
 
 	render() {
-		const { commentId, patient, redirectToHome, redirectToSignin } = this.state;
+		const { patient, redirectToHome, redirectToSignin } = this.state;
 
 		if (redirectToHome) {
 			return <Redirect to={`/`} />;
@@ -155,12 +156,12 @@ class SinglePatient extends Component {
 						<h2>Loading...</h2>
 					</div>
 				) : (
-					this.renderPatient(patient)
+
+						this.renderPatient(patient)
 				)}
 
-
 				<NewRecord patient_id={patient.patient_id} />
-				<Records />
+				<Records patient_id={patient.patient_id}/>
 			</div>
 		);
 	}

@@ -11,15 +11,22 @@ class DeleteUser extends Component {
 
     deleteAccount = () => {
         const token = isAuthenticated().token;
+        const role = isAuthenticated().user.role;
         const userId = this.props.userId;
         remove(userId, token).then(data => {
             if (data.error) {
                 console.log(data.error);
             } else {
                 // signout user
-                signout(() => console.log("User is deleted"));
-                // redirect
-                this.setState({ redirect: true });
+                if (role === 'subscriber') {
+                    signout(() => console.log("User is deleted"));
+                    // redirect
+                    this.setState({ redirect: true });
+                }
+                // better to not do this twice,create a new staet for this
+                if (role === 'admin') {
+                    this.setState({redirect: true})
+                }
             }
         });
     };
@@ -34,8 +41,10 @@ class DeleteUser extends Component {
     };
 
     render() {
+
         if (this.state.redirect) {
-            return <Redirect to="/" />;
+            if (isAuthenticated().user.role === 'subscriber') return <Redirect to="/" />;
+            else return <Redirect to="/findpeople" />;
         }
         return (
             <button

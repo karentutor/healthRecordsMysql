@@ -81,7 +81,7 @@ exports.updateUser = (req, res, next) => {
         
         const { _id, name, email, password } = user;
 
-        let query = `UPDATE users SET name='${name}', email='${email}', password=${password} WHERE _id=${_id}`;
+        let query = `UPDATE users SET name='${name}', email='${email}', password='${password}' WHERE _id=${_id}`;
 
         db.query(query, (err, data) => {
             if (err) {

@@ -5,7 +5,8 @@ const {
     editRecord,
     deleteRecord,
     getRecords,
-    recordById
+    recordById,
+    recordsByPatientId
 } = require('../controllers/record');
 
 
@@ -17,6 +18,7 @@ const { createRecordValidator } = require('../validator');
 const router = express.Router();
 
 router.get('/records', getRecords);
+router.get('/records/:patientId', recordsByPatientId);
 router.get('/record/:recordId', recordById);
 router.delete('/record/:recordId', deleteRecord);
 router.post('/record/new/:patientId', createRecord);

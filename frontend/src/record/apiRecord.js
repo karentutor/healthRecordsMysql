@@ -14,8 +14,10 @@ export const create = (patientId, token, record) => {
         .catch(err => console.log(err));
 };
 
-export const list = () => {
-    return fetch(`${process.env.REACT_APP_API_URL}/records`, {
+export const listByPatient = (patientId) => {
+
+
+    return fetch(`${process.env.REACT_APP_API_URL}/records/${patientId}`, {
         method: "GET"
     })
         .then(response => {

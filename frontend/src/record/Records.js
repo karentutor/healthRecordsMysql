@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { list } from "./apiRecord";
+import { listByPatient } from "./apiRecord";
 import DefaultPatient from "../images/mountains.jpg";
 import { Link } from "react-router-dom";
 
@@ -7,12 +7,16 @@ class Records extends Component {
 	constructor() {
 		super();
 		this.state = {
+			patient_id : '',
 			records: [],
 		};
 	}
 
 	loadRecords = () => {
-		list()
+
+		let patientId = this.state.patient_id;
+
+		listByPatient(patientId)
 			.then((data) => {
 				if (data.error) {
 					console.log(data.error);
@@ -24,6 +28,7 @@ class Records extends Component {
 	};
 
 	componentDidMount() {
+		this.setState({patient_id : this.props.patient_id})
 		this.loadRecords(this.state.page);
 	}
 

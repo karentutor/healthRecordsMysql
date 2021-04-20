@@ -47,6 +47,7 @@ exports.deletePatient = (req, res, next) => {
 exports.getPatients = async (req, res) => {
 	let query = "SELECT p._id as patient_id, p.name, p.information, p.postedBy, p.created, p.updated, u.name FROM `patients` as `p` INNER JOIN `users` as `u` on p.postedBy = u._id";
 
+	console.log(query);
 	db.query(query, (err, data) => {
 		if (err) {
 			return res.status(500).send(err);
