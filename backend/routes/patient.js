@@ -18,7 +18,7 @@ const {
 
 const { requireSignin } = require('../controllers/auth');
 const { userById } = require('../controllers/user');
-const { createPatientValidator } = require('../validator');
+const { createPatientAddtoBody, createPatientValidator } = require('../validator');
 
 const router = express.Router();
 
@@ -27,7 +27,7 @@ router.get('/patients', getPatients);
 
 
 // patient routes
-router.post('/patient/new/:userId', requireSignin, createPatient, createPatientValidator);
+router.post('/patient/new/:userId', requireSignin, createPatientAddtoBody, createPatientValidator, createPatient);
 router.get('/patients/by/:userId', requireSignin, patientsByUser);
 router.get('/patient/:patientId', singlePatient);
 router.put('/patient/:patientId', requireSignin, isPoster, updatePatient);

@@ -40,7 +40,7 @@ class NewPatient extends Component {
     };
 
     handleChange = name => event => {
-        this.setState({ error: "" });
+        this.setState({ error: "", loading: "" });
         const value =
             name === "photo" ? event.target.files[0] : event.target.value;
 
@@ -137,7 +137,7 @@ class NewPatient extends Component {
                     {error}
                 </div>
 
-                {loading ? (
+                {loading && !error ? (
                     <div className="jumbotron text-center">
                         <h2>Loading...</h2>
                     </div>

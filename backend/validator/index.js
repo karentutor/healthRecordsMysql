@@ -1,25 +1,51 @@
+const formidable = require("formidable");
+
+exports.createPatientAddtoBody = (req, res, next) => {
+
+    let form = new formidable.IncomingForm();
+	form.keepExtensions = true;
+    form.parse(req, (err, fields, files) => {
+        if (err) {
+            return res.status(400).json({
+                error: "Image could not be uploaded",
+            });
+        }
+
+        let name = fields.name;
+        let information = fields.information;
+        
+        let data = {};
+        data.patient_name = name;
+        data.patient_information = information;
+        req.body = data;
+        next();
+    });
+        
+}
+
 exports.createPatientValidator = (req, res, next) => {
     // title
-    req.check('title', 'Write a title').notEmpty();
-    req.check('title', 'Title must be between 4 to 150 characters').isLength({
-        min: 4,
-        max: 150
+    req.check('patient_name', 'Write a patient name').notEmpty();
+    req.check('patient_name', 'Name must be 2 to 35 characters').isLength({
+        min: 2,
+        max: 35
     });
     // body
-    req.check('body', 'Write a body').notEmpty();
-    req.check('body', 'Body must be between 4 to 2000 characters').isLength({
-        min: 4,
-        max: 2000
+    req.check('patient_information', 'Please add patient information').notEmpty();
+    req.check('patient_information', 'Patient information must be 2 to 1000 characters').isLength({
+        min: 2,
+        max: 1000
     });
     // check for errors
     const errors = req.validationErrors();
     // if error show the first one as they happen
     if (errors) {
+        console.log(errors[0].msg);
         const firstError = errors.map(error => error.msg)[0];
         return res.status(400).json({ error: firstError });
-    }
+    } else next();
     // proceed to next middleware
-    next();
+//    next();
 };
 
 exports.createRecordValidator = (req, res, next) => {

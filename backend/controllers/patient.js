@@ -5,26 +5,11 @@ const _ = require("lodash");
 
 exports.createPatient = (req, res, next) => {
 	
-	let form = new formidable.IncomingForm();
-	form.keepExtensions = true;
-	form.parse(req, (err, fields, files) => {
-		if (err) {
-			return res.status(400).json({
-				error: "Image could not be uploaded",
-			});
-		}
 
-		let name = fields.name;
-		let information = fields.information;
-		let postedBy = req.profile._id;
-		let role = req.profile.role;
-
-
-		if (files.photo) {
-			//            patient.photo.data = fs.readFileSync(files.photo.path);
-			//           patient.photo.contentType = files.photo.type;
-		}
-
+	const name = req.body.patient_name;
+	const information = req.body.patient_information;
+	const postedBy = req.profile._id;
+	
 		let query =
 			"INSERT INTO `patients` (name, information, postedBy) VALUES ('" +
 			name +
@@ -38,9 +23,9 @@ exports.createPatient = (req, res, next) => {
 			if (err) {
 				return res.status(500).send(err);
 			}
-			res.status(200).send(data);
+			res.status(200).json({message: 'success'});
 		});
-	});
+//	});
 };
 
 exports.deletePatient = (req, res, next) => {
